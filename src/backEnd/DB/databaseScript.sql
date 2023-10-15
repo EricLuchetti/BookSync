@@ -1,6 +1,6 @@
 -- Create Database
-CREATE DATABASE IF NOT EXISTS my_library_database;
-USE my_library_database;
+CREATE DATABASE IF NOT EXISTS booksync;
+USE booksync;
 
 -- Create Users Table
 CREATE TABLE IF NOT EXISTS users (

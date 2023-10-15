@@ -8,22 +8,22 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema bookSync
+-- Schema booksync
 -- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `bookSync` ;
+DROP SCHEMA IF EXISTS `booksync` ;
 
 -- -----------------------------------------------------
--- Schema bookSync
+-- Schema booksync
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `bookSync` ;
-USE `bookSync` ;
+CREATE SCHEMA IF NOT EXISTS `booksync` ;
+USE `booksync` ;
 
 -- -----------------------------------------------------
--- Table `bookSync`.`books`
+-- Table `booksync`.`books`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `bookSync`.`books` ;
+DROP TABLE IF EXISTS `booksync`.`books` ;
 
-CREATE TABLE IF NOT EXISTS `bookSync`.`books` (
+CREATE TABLE IF NOT EXISTS `booksync`.`books` (
   `id` INT NULL DEFAULT NULL AUTO_INCREMENT,
   `title` VARCHAR(255) NOT NULL,
   `qtd_reviews` INT NULL DEFAULT NULL,
@@ -32,15 +32,15 @@ CREATE TABLE IF NOT EXISTS `bookSync`.`books` (
   PRIMARY KEY (`id`),
   CONSTRAINT ``
     FOREIGN KEY ()
-    REFERENCES `bookSync`.`genres` (`id`));
+    REFERENCES `booksync`.`genres` (`id`));
 
 
 -- -----------------------------------------------------
--- Table `bookSync`.`books_genres`
+-- Table `booksync`.`books_genres`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `bookSync`.`books_genres` ;
+DROP TABLE IF EXISTS `booksync`.`books_genres` ;
 
-CREATE TABLE IF NOT EXISTS `bookSync`.`books_genres` (
+CREATE TABLE IF NOT EXISTS `booksync`.`books_genres` (
   `book_id` INT NULL DEFAULT NULL,
   `genre_id` INT NULL DEFAULT NULL,
   PRIMARY KEY (`book_id`, `genre_id`),
@@ -48,29 +48,29 @@ CREATE TABLE IF NOT EXISTS `bookSync`.`books_genres` (
   INDEX (`genre_id` ASC) VISIBLE,
   CONSTRAINT ``
     FOREIGN KEY (`book_id`)
-    REFERENCES `bookSync`.`books` (`id`),
+    REFERENCES `booksync`.`books` (`id`),
   CONSTRAINT ``
     FOREIGN KEY (`genre_id`)
-    REFERENCES `bookSync`.`genres` (`id`));
+    REFERENCES `booksync`.`genres` (`id`));
 
 
 -- -----------------------------------------------------
--- Table `bookSync`.`genres`
+-- Table `booksync`.`genres`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `bookSync`.`genres` ;
+DROP TABLE IF EXISTS `booksync`.`genres` ;
 
-CREATE TABLE IF NOT EXISTS `bookSync`.`genres` (
+CREATE TABLE IF NOT EXISTS `booksync`.`genres` (
   `id` INT NULL DEFAULT NULL AUTO_INCREMENT,
   `name` VARCHAR(30) NOT NULL,
   PRIMARY KEY (`id`));
 
 
 -- -----------------------------------------------------
--- Table `bookSync`.`users`
+-- Table `booksync`.`users`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `bookSync`.`users` ;
+DROP TABLE IF EXISTS `booksync`.`users` ;
 
-CREATE TABLE IF NOT EXISTS `bookSync`.`users` (
+CREATE TABLE IF NOT EXISTS `booksync`.`users` (
   `id` INT NULL DEFAULT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NOT NULL,
   `sex` VARCHAR(10) NULL DEFAULT NULL,
@@ -80,15 +80,15 @@ CREATE TABLE IF NOT EXISTS `bookSync`.`users` (
   PRIMARY KEY (`id`),
   CONSTRAINT ``
     FOREIGN KEY ()
-    REFERENCES `bookSync`.`genres` (`id`));
+    REFERENCES `booksync`.`genres` (`id`));
 
 
 -- -----------------------------------------------------
--- Table `bookSync`.`users_genres`
+-- Table `booksync`.`users_genres`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `bookSync`.`users_genres` ;
+DROP TABLE IF EXISTS `booksync`.`users_genres` ;
 
-CREATE TABLE IF NOT EXISTS `bookSync`.`users_genres` (
+CREATE TABLE IF NOT EXISTS `booksync`.`users_genres` (
   `user_id` INT NULL DEFAULT NULL,
   `genre_id` INT NULL DEFAULT NULL,
   PRIMARY KEY (`user_id`, `genre_id`),
@@ -96,10 +96,10 @@ CREATE TABLE IF NOT EXISTS `bookSync`.`users_genres` (
   INDEX (`genre_id` ASC) VISIBLE,
   CONSTRAINT ``
     FOREIGN KEY (`user_id`)
-    REFERENCES `bookSync`.`users` (`id`),
+    REFERENCES `booksync`.`users` (`id`),
   CONSTRAINT ``
     FOREIGN KEY (`genre_id`)
-    REFERENCES `bookSync`.`genres` (`id`));
+    REFERENCES `booksync`.`genres` (`id`));
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
