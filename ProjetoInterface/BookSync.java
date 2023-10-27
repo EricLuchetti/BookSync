@@ -1,21 +1,26 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class BookSync extends JFrame {
 
     private Font font = new Font("Arial", Font.BOLD, 16);
     private Font font2 = new Font("Arial", Font.ITALIC, 18);
     private Font font3 = new Font("Baskervville", Font.PLAIN, 22);
-    JTextField login = new JTextField(30);
-    JPasswordField senha = new JPasswordField(30);
     JTextField tfLogin, tfSenha;
 
     public static void main(String[] args) {
-        BookSync ga = new BookSync();
-        ga.desenhar();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                BookSync ga = new BookSync();
+                ga.desenhar();
+            }
+        });
     }
 
-    public void desenhar() {
+    public BookSync() {
         this.setTitle("BookSync");
         this.setSize(1040, 650);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -27,11 +32,12 @@ public class BookSync extends JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    public void desenhar() {
         /* Imagem Painel */
         JLabel imagemLabel = new JLabel();
-        ImageIcon imagemLogo = new ImageIcon(
-                "C:\\Users\\Amanda Oliveira\\Documents\\ProjetoInterface\\BooksyncImagem.png");
+        ImageIcon imagemLogo = new ImageIcon("C:\\Users\\Amanda Oliveira\\Documents\\ProjetoInterface\\BooksyncImagem.png");
         imagemLabel.setIcon(imagemLogo);
 
         /* Introdução */
@@ -53,7 +59,7 @@ public class BookSync extends JFrame {
         lbSenha.setFont(font);
         lbSenha.setForeground(Color.WHITE);
 
-        tfSenha = new JTextField(" Insira a sua senha");
+        tfSenha = new JPasswordField(" Insira a sua senha");
         tfSenha.setFont(font2);
 
         /* Posições Login */
@@ -72,7 +78,9 @@ public class BookSync extends JFrame {
         botoes.setLayout(new GridLayout(1, 2, 5, 5));
         botoes.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
         botoes.setOpaque(false);
-        botoes.add(btnAcessar());
+        JButton acessar = btnAcessar();
+        acessar.addActionListener(new LoginController().createLoginActionListener(tfLogin, tfSenha)); // Chama o método do LoginController
+        botoes.add(acessar);
         botoes.add(btnCancelar());
 
         JPanel formBotoesPanel = new JPanel();
@@ -103,9 +111,12 @@ public class BookSync extends JFrame {
         JButton cancelar = new JButton("Cancelar");
         cancelar.setFont(font);
         cancelar.setBackground(new Color(249, 161, 61));
-        cancelar.addActionListener(a -> {
-            login.setText("");
-            senha.setText("");
+        cancelar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tfLogin.setText("");
+                tfSenha.setText("");
+            }
         });
         return cancelar;
     }
