@@ -27,7 +27,7 @@ public class BookSync extends JFrame {
 
         /* Icon Form */
         try {
-            ImageIcon icon = new ImageIcon("C:\\Users\\Amanda Oliveira\\Documents\\ProjetoInterface\\icon.png");
+            ImageIcon icon = new ImageIcon("BookSync/ProjetoInterface/BooksyncImagem.PNG");
             setIconImage(icon.getImage());
         } catch (Exception e) {
             e.printStackTrace();
