@@ -1,10 +1,7 @@
 {
-    "java.project.sourcePaths": [
-        "BookSync\\booksync\\src"
-    ],
-    "java.project.outputPath": "BookSync\\bin",
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "BookSync\\lib\\mysql-connector-j-8.2.0\\mysql-connector-j-8.2.0\\mysql-connector-j-8.2.0.jar"
+        "lib/**/*.jar"
     ]
 }
