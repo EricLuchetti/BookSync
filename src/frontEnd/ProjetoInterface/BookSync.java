@@ -3,9 +3,6 @@ package frontEnd.ProjetoInterface;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
 
-import frontEnd.ProjetoInterface.BookSync.BackgroundPanel;
-import frontEnd.ProjetoInterface.BookSync.RoundedBorder;
-
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.event.ActionEvent;
