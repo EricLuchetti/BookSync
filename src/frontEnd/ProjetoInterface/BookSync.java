@@ -29,7 +29,7 @@ public class BookSync extends JFrame {
         this.setResizable(false);
         // Icone do Sistema
         try {
-            ImageIcon icon = new ImageIcon("C:/Users/Amanda Oliveira/Documents/ProjetoInterface/BooksyncImagem.PNG");
+            ImageIcon icon = new ImageIcon("src\\frontEnd\\ProjetoInterface\\BooksyncImagem.PNG");
             setIconImage(icon.getImage());
         } catch (Exception e) {
             e.printStackTrace();
@@ -39,11 +39,11 @@ public class BookSync extends JFrame {
     // Background
     public void desenhar() {
         BackgroundPanel mainPanel = new BackgroundPanel(
-                "C:/Users/Amanda Oliveira/Documents/ProjetoInterface/FundoBookSync.jpg");
+                "src\\frontEnd\\ProjetoInterface\\FundoBookSync.jpg");
 
         // Imagem BookSync, lado esquerdo
         JLabel lbImagemLogo = new JLabel();
-        ImageIcon imagemLogo = new ImageIcon("C:/Users/Amanda Oliveira/Documents/ProjetoInterface/BooksyncImagem.PNG");
+        ImageIcon imagemLogo = new ImageIcon("src\\frontEnd\\ProjetoInterface\\BooksyncImagem.PNG");
         lbImagemLogo.setIcon(imagemLogo);
 
         // Bem Vindo
