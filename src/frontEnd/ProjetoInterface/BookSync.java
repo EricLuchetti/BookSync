@@ -1,7 +1,15 @@
+package frontEnd.ProjetoInterface;
+
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
+
+import frontEnd.ProjetoInterface.BookSync.BackgroundPanel;
+import frontEnd.ProjetoInterface.BookSync.RoundedBorder;
+
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class BookSync extends JFrame {
     // Fontes do sistema
@@ -83,8 +91,6 @@ public class BookSync extends JFrame {
 
         // Botão Acesso ao Sistema
         JButton acessar = btnAcessar();
-        acessar.addActionListener(
-                e -> new LoginController().createLoginActionListener(tfLogin, tfSenha).actionPerformed(e));
 
         // Painel de Posições
         JPanel painel = new JPanel(new GridBagLayout());
@@ -190,6 +196,21 @@ public class BookSync extends JFrame {
         acessar.setPreferredSize(new Dimension(100, 40));
         acessar.setMinimumSize(new Dimension(100, 40));
         acessar.setMaximumSize(new Dimension(100, 40));
+
+        acessar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Get the values from tfLogin and tfSenha
+                String login = tfLogin.getText();
+                String senha = tfSenha.getText();
+
+                // Call the login function from another file with login and senha values
+                backEnd.LoginHandler.login(login, senha);
+
+                // Close the current screen
+                dispose();
+            }
+        });
 
         return acessar;
     }
