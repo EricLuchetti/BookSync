@@ -9,7 +9,7 @@ public class LoginHandler {
 
     //Dentro dessa Classe temos o script de login
 
-    public static String login(String username, String password) {
+    public static Void login(String username, String password) {
         String encryptedPassword = Services.encryptPassword(password);
 
         try (Connection connection = DatabaseConnector.connect()) {
@@ -20,22 +20,28 @@ public class LoginHandler {
 
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
-                        return "Login successful";
+                        System.out.println(resultSet.getString("admin"));
+                        if (Integer.parseInt(resultSet.getString("admin"))==0) {
+                            frontEnd.ProjetoInterface.TelaUsuario.main(null);
+                        }
+                        else{
+                            frontEnd.ProjetoInterface.TelaAdm.main(null);
+                        }
                     } else {
-                        return "Login failed";
+                        //TODO tela de erro de login
                     }
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return "Login failed due to a database error.";
         }
-    }
+    return null;
+}
 
     
 //DEBUG
     public static void main(String[] args) {
-        String result = login("john_doe", "password123");
-        System.out.println(result);
+        //String result = login("john_doe", "password123");
+        //System.out.println(result);
     }
 }
