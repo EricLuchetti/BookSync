@@ -60,7 +60,7 @@ public class TelaAdm {
 
         try {
             // Tenta carregar e definir um ícone para a janela
-            ImageIcon icon = new ImageIcon("src\\frontEnd\\ProjetoInterface\\imgs\\Icon.PNG");
+            ImageIcon icon = new ImageIcon("src\\frontEnd\\imgs\\Icon.PNG");
             frame.setIconImage(icon.getImage());
         } catch (Exception e) {
             // Se houver um erro ao carregar o ícone, imprime o erro
