@@ -1,85 +1,45 @@
-package frontEnd.ProjetoInterface;
+package frontEnd.telas;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 
-class RoundButton extends JButton {
-    public RoundButton(String label) {
-        super(label);
-        setContentAreaFilled(false);
-    }
+// Declaração da classe principal
+public class TelaUsuario {
 
-    protected void paintComponent(Graphics g) {
-        if (getModel().isArmed()) {
-            g.setColor(Color.lightGray);
-        } else {
-            g.setColor(getBackground());
-        }
-        g.fillRoundRect(0, 0, getSize().width - 1, getSize().height - 1, 30, 30);
-
-        super.paintComponent(g);
-    }
-
-    protected void paintBorder(Graphics g) {
-        g.setColor(getForeground());
-        g.drawRoundRect(0, 0, getSize().width - 1, getSize().height - 1, 30, 30);
-    }
-
-    Shape shape;
-
-    public boolean contains(int x, int y) {
-        if (shape == null || !shape.getBounds().equals(getBounds())) {
-            shape = new RoundRectangle2D.Float(0, 0, getWidth() - 1, getHeight() - 1, 30, 30);
-        }
-        return shape.contains(x, y);
-    }
-}
-
-public class TelaAdm {
-
-    // Método principal que inicia o programa
+    // Método principal que será chamado para iniciar o programa
     public static void main(String[] args) {
-        // SwingUtilities.invokeLater() é usado para garantir que a interface gráfica seja construída em uma thread específica.
+        // Chama o método createAndShowGUI() na thread de eventos Swing
         SwingUtilities.invokeLater(() -> createAndShowGUI());
     }
 
-    // Este método cria e exibe a interface gráfica
+    // Método para criar e exibir a interface gráfica
     private static void createAndShowGUI() {
-        // Cria uma janela (frame) com o título "Menu"
+        // Cria um JFrame (janela) com o título "Menu"
         JFrame frame = new JFrame("Menu");
-
+        
         // Define o comportamento padrão ao fechar a janela
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        
         // Define o tamanho da janela
         frame.setSize(1300, 650);
-
+        
         // Coloca a janela no centro da tela
         frame.setLocationRelativeTo(null);
 
-        try {
-            // Tenta carregar e definir um ícone para a janela
-            ImageIcon icon = new ImageIcon("src\\frontEnd\\ProjetoInterface\\Icon.PNG");
-            frame.setIconImage(icon.getImage());
-        } catch (Exception e) {
-            // Se houver um erro ao carregar o ícone, imprime o erro
-            e.printStackTrace();
-        }
-
-        // Cria um painel personalizado com um fundo colorido degradê
+        // Cria um JPanel personalizado com um fundo degradê
         JPanel panel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-
+                
                 // Define as cores de início e fim para o degradê
                 Color startColor = new Color(255, 165, 0);
                 Color endColor = new Color(128, 0, 128);
-
+                
                 // Cria um objeto de degradê
                 GradientPaint gradient = new GradientPaint(0, 0, startColor, getWidth(), getHeight(), endColor);
-
+                
                 // Configura o objeto Graphics2D para usar o degradê e preenche o painel com as cores
                 Graphics2D g2d = (Graphics2D) g;
                 g2d.setPaint(gradient);
@@ -102,16 +62,14 @@ public class TelaAdm {
         // Adiciona a etiqueta ao painel na região Norte (topo)
         panel.add(greeting, BorderLayout.NORTH);
 
-        // Cria um painel para os botões, configurando seu layout e tornando-o transparente
+        // Cria um JPanel para os botões com layout FlowLayout e torna-o transparente
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 60));
         buttonPanel.setOpaque(false);
 
-        // Cria três botões estilizados e os adiciona ao painel de botões
-        RoundButton newsButton = createStyledButton("Gerenciar livros", 300, 400);
+        // Cria dois botões estilizados e os adiciona ao painel de botões
         RoundButton bookShowcaseButton = createStyledButton("Vitrine de Livros", 300, 400);
         RoundButton addBookButton = createStyledButton("Adicionar Livro", 300, 400);
 
-        buttonPanel.add(newsButton);
         buttonPanel.add(bookShowcaseButton);
         buttonPanel.add(addBookButton);
 
@@ -123,7 +81,7 @@ public class TelaAdm {
         frame.setVisible(true);
     }
 
-    // Este método cria e configura um botão com um estilo específico
+    // Método para criar um botão estilizado
     private static RoundButton createStyledButton(String text, int width, int height) {
         RoundButton button = new RoundButton(text);
         button.setFont(new Font("Arial", Font.BOLD, 25));
@@ -132,4 +90,51 @@ public class TelaAdm {
         button.setForeground(Color.WHITE);
         return button;
     }
+}
+
+// Classe que estende JButton para criar botões redondos
+class RoundButton extends JButton {
+
+    // Construtor que recebe um rótulo para o botão
+    public RoundButton(String label) {
+        super(label);
+        setContentAreaFilled(false);
+    }
+
+    // Método para pintar o componente (botão)
+    @Override
+    protected void paintComponent(Graphics g) {
+        // Verifica se o botão está pressionado (armado)
+        if (getModel().isArmed()) {
+            g.setColor(new Color(150, 150, 150)); // Define a cor quando pressionado
+        } else {
+            g.setColor(getBackground()); // Usa a cor de fundo padrão
+        }
+        // Desenha um retângulo arredondado para representar o botão
+        g.fillRoundRect(0, 0, getSize().width - 1, getSize().height - 1, 20, 20);
+        super.paintComponent(g);
+    }
+
+    // Método para pintar a borda do componente (botão)
+    @Override
+    protected void paintBorder(Graphics g) {
+        g.setColor(Color.WHITE); // Define a cor da borda
+        // Desenha a borda do retângulo arredondado
+        g.drawRoundRect(0, 0, getSize().width - 1, getSize().height - 1, 20, 20);
+    }
+
+    // Método para verificar se um ponto (x, y) está dentro do botão
+    @Override
+    public boolean contains(int x, int y) {
+        // Verifica se a forma (shape) é nula ou se as dimensões mudaram
+        if (shape == null || !shape.getBounds().equals(getBounds())) {
+            // Cria um novo objeto RoundRectangle2D para representar a forma do botão
+            shape = new RoundRectangle2D.Float(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
+        }
+        // Verifica se o ponto (x, y) está dentro da forma do botão
+        return shape.contains(x, y);
+    }
+
+    // Variável para armazenar a forma do botão
+    private Shape shape;
 }

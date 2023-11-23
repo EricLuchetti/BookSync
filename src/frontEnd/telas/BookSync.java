@@ -1,4 +1,4 @@
-package frontEnd.ProjetoInterface;
+package frontEnd.telas;
 
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
@@ -29,7 +29,7 @@ public class BookSync extends JFrame {
         this.setResizable(false);
         // Icone do Sistema
         try {
-            ImageIcon icon = new ImageIcon("src\\frontEnd\\ProjetoInterface\\BooksyncImagem.PNG");
+            ImageIcon icon = new ImageIcon("src\\frontEnd\\ProjetoInterface\\imgs\\BooksyncImagem.PNG");
             setIconImage(icon.getImage());
         } catch (Exception e) {
             e.printStackTrace();
@@ -39,11 +39,11 @@ public class BookSync extends JFrame {
     // Background
     public void desenhar() {
         BackgroundPanel mainPanel = new BackgroundPanel(
-                "src\\frontEnd\\ProjetoInterface\\FundoBookSync.jpg");
+                "src\\frontEnd\\ProjetoInterface\\imgs\\FundoBookSync.jpg");
 
         // Imagem BookSync, lado esquerdo
         JLabel lbImagemLogo = new JLabel();
-        ImageIcon imagemLogo = new ImageIcon("src\\frontEnd\\ProjetoInterface\\BooksyncImagem.PNG");
+        ImageIcon imagemLogo = new ImageIcon("src\\frontEnd\\ProjetoInterface\\imgs\\BooksyncImagem.PNG");
         lbImagemLogo.setIcon(imagemLogo);
 
         // Bem Vindo
