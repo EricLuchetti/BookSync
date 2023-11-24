@@ -8,7 +8,7 @@ import java.awt.geom.RoundRectangle2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class BookSync extends JFrame {
+public class LoginScreen extends JFrame {
     // Fontes do sistema
     private Font font = new Font("Arial", Font.BOLD, 16);
     private Font font2 = new Font("Arial", Font.ITALIC, 18);
@@ -17,12 +17,12 @@ public class BookSync extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            BookSync ga = new BookSync();
+            LoginScreen ga = new LoginScreen();
             ga.desenhar();
         });
     }
 
-    public BookSync() {
+    public LoginScreen() {
         this.setTitle("BookSync");
         this.setSize(1040, 650);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,7 +53,7 @@ public class BookSync extends JFrame {
         lbDescricao.setHorizontalAlignment(SwingConstants.CENTER);
 
         // Login
-        JLabel lbLogin = new JLabel("  E-mail");
+        JLabel lbLogin = new JLabel("  Login");
         lbLogin.setFont(font);
         lbLogin.setForeground(Color.WHITE);
 

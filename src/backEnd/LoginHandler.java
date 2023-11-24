@@ -22,10 +22,10 @@ public class LoginHandler {
                     if (resultSet.next()) {
                         System.out.println(resultSet.getString("admin"));
                         if (Integer.parseInt(resultSet.getString("admin"))==0) {
-                            frontEnd.telas.TelaUsuario.main(null);
+                            frontEnd.telas.MainMenuScreen.main(null);
                         }
                         else{
-                            frontEnd.telas.TelaAdm.main(null);
+                            frontEnd.telas.AdminMenuScreen.main(null);
                         }
                     } else {
                         //TODO tela de erro de login

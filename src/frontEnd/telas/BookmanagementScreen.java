@@ -106,6 +106,13 @@ public class BookmanagementScreen extends JFrame {
                 frontEnd.telas.BookmanagementScreen.main(null);
             }
         });
+        JButton returnButton = new JButton("Voltar para o Menu");
+        returnButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                dispose();
+                frontEnd.telas.AdminMenuScreen.main(null);
+            }
+        });
 
         // Add components to frame
         JPanel buttonPanel = new JPanel();
@@ -113,6 +120,7 @@ public class BookmanagementScreen extends JFrame {
         buttonPanel.add(removeButton);
         buttonPanel.add(removeBookButton);
         buttonPanel.add(publishBookButton);
+        buttonPanel.add(returnButton);
         add(buttonPanel, BorderLayout.NORTH);
         add(new JScrollPane(table), BorderLayout.CENTER);
 

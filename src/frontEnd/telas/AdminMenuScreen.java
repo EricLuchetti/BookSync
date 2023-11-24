@@ -38,7 +38,7 @@ class RoundButton extends JButton {
     }
 }
 
-public class TelaAdm {
+public class AdminMenuScreen {
 
     // Método principal que inicia o programa
     public static void main(String[] args) {
@@ -97,7 +97,7 @@ public class TelaAdm {
         RoundButton newsButton = createStyledButton("Gerenciar livros", 300, 400, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frontEnd.telas.BookSync.main(null);
+                frontEnd.telas.BookmanagementScreen.main(null);
                 frame.dispose();
             }
         });

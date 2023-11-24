@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.RoundRectangle2D;
 
-public class TelaUsuario {
+public class MainMenuScreen {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> createAndShowGUI());
@@ -48,7 +48,7 @@ public class TelaUsuario {
         bookShowcaseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frontEnd.telas.BookSync.main(null);
+                frontEnd.telas.LoginScreen.main(null);
                 frame.dispose();
             }
         });
@@ -56,7 +56,7 @@ public class TelaUsuario {
         addBookButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frontEnd.telas.BookSync.main(null);
+                frontEnd.telas.LoginScreen.main(null);
                 frame.dispose();
             }
         });
