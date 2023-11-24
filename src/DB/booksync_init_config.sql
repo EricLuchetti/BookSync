@@ -23,9 +23,12 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS books (
     id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,
+    author VARCHAR(255),
+    publisher VARCHAR(255),
     qtd_reviews INT,
     review_score DECIMAL(3,2),
     public BOOLEAN NOT NULL,
+    cover MEDIUMBLOB,
     genre_id INT,
     CONSTRAINT fk_genre_id_books FOREIGN KEY (genre_id) REFERENCES genres(id)
 );
@@ -60,9 +63,9 @@ INSERT INTO users (name, sex, admin, login, password, genre_id) VALUES ('Jane Sm
 INSERT INTO users (name, sex, admin, login, password, genre_id) VALUES ('Bob Johnson', 'Male', false, 'bob_johnson', '68256910bc07ec7457bcb7f4374e43ab5c98eda8d8eb8e1e53d6e33a47e8afe3', 3);-- securepwd
 
 -- Books Table Inserts
-INSERT INTO books (title, qtd_reviews, review_score, public, genre_id) VALUES ('The Catcher in the Rye', 500, 4.2, true, 1);
-INSERT INTO books (title, qtd_reviews, review_score, public, genre_id) VALUES ('The Da Vinci Code', 800, 4.5, true, 2);
-INSERT INTO books (title, qtd_reviews, review_score, public, genre_id) VALUES ('Dune', 600, 4.7, true, 3);
+INSERT INTO books (title, author, publisher, qtd_reviews, review_score, public, genre_id) VALUES ('The Catcher in the Rye','Eu Estou','Muito Bravo', 500, 4.2, true, 1);
+INSERT INTO books (title, author, publisher, qtd_reviews, review_score, public, genre_id) VALUES ('The Da Vinci Code','Com quem','Não leu', 800, 4.5, false, 2);
+INSERT INTO books (title, author, publisher, qtd_reviews, review_score, public, genre_id) VALUES ('Dune','a doc','e saiu adicionando campo', 600, 4.7, true, 3);
 
 -- Users_Genres Table Inserts
 INSERT INTO users_genres (user_id, genre_id) VALUES (1, 1);

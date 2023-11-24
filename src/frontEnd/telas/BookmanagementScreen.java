@@ -2,6 +2,8 @@ package frontEnd.telas;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.*;
@@ -10,20 +12,13 @@ public class BookmanagementScreen extends JFrame {
     private JTable table;
     private DefaultTableModel model;
 
-    public BookmanagementScreen() {
+    public BookmanagementScreen(Object[][] data) {
         setTitle("Gerenciamento de Livros");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 400);
 
         // Create table
         String[] columns = {"Título", "Autor", "Editora", "Capa Adicionada", "Imagem"};
-        Object[][] data = {
-            {"Livro 1", "Autor 1", "Editora 1", false, null},
-            {"Livro 2", "Autor 2", "Editora 2", true, null},
-            {"Livro 3", "Autor 3", "Editora 3", false, null},
-            {"Livro 4", "Autor 4", "Editora 4", true, null},
-            {"Livro 5", "Autor 5", "Editora 5", false, null}
-        };
         model = new DefaultTableModel(data, columns) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
@@ -60,6 +55,14 @@ public class BookmanagementScreen extends JFrame {
                         model.setValueAt(true, rowInModel, 3);
                         model.setValueAt(new ImageIcon(imagePath), rowInModel, 4);
                         model.fireTableDataChanged();
+                        try {
+                            backEnd.CoverHandler.updateBookCover(imagePath, model.getValueAt(rowInModel,0).toString());
+                        } catch (IOException e1) {
+                            // TODO Auto-generated catch block
+                            e1.printStackTrace();
+                        }
+                        dispose();
+                        frontEnd.telas.BookmanagementScreen.main(null);
                     }
                 }
             }
@@ -86,9 +89,21 @@ public class BookmanagementScreen extends JFrame {
                 int rowInModel = table.convertRowIndexToModel(rowInView);
 
                 if (rowInModel != -1) {
-                    model.removeRow(rowInModel);
-                    model.fireTableDataChanged();
+                    backEnd.Services.removeBook(model.getValueAt(rowInModel,0).toString());
+                    dispose();
+                    frontEnd.telas.BookmanagementScreen.main(null);
                 }
+            }
+        });
+
+        JButton publishBookButton = new JButton("Publicar Livro");
+        publishBookButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                int rowInView = table.getSelectedRow();
+                int rowInModel = table.convertRowIndexToModel(rowInView);
+                backEnd.BookHandler.publishBook(model.getValueAt(rowInModel,0).toString());
+                dispose();
+                frontEnd.telas.BookmanagementScreen.main(null);
             }
         });
 
@@ -97,6 +112,7 @@ public class BookmanagementScreen extends JFrame {
         buttonPanel.add(addButton);
         buttonPanel.add(removeButton);
         buttonPanel.add(removeBookButton);
+        buttonPanel.add(publishBookButton);
         add(buttonPanel, BorderLayout.NORTH);
         add(new JScrollPane(table), BorderLayout.CENTER);
 
@@ -166,7 +182,14 @@ public class BookmanagementScreen extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new BookmanagementScreen());
+        SwingUtilities.invokeLater(() -> {
+            try {
+                new BookmanagementScreen(backEnd.CoverHandler.getNonPublicBooks());
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        });
     }
 }
 
