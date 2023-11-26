@@ -16,9 +16,9 @@ import javax.swing.plaf.basic.ComboPopup;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 public class CadastroTela extends JFrame {
-    private Font font = new Font("Arial", Font.BOLD, 16);
-    private Font font2 = new Font("Arial", Font.PLAIN, 18);
-    private Font font3 = new Font("Baskerville", Font.PLAIN, 22);
+    private Font font = new Font("Arial", Font.BOLD, 12);
+    private Font font2 = new Font("Arial", Font.PLAIN, 14);
+    private Font font3 = new Font("Baskerville", Font.PLAIN, 16);
 
     private JTextField nomeUsuarioField;
     private JTextField emailField;
@@ -26,21 +26,17 @@ public class CadastroTela extends JFrame {
     private JComboBox<String> sexoComboBox;
     private JComboBox<String> generoFavoritoComboBox;
     private JPasswordField senhaField;
-    private JButton cadastrarButton;
 
     public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         SwingUtilities.invokeLater(() -> {
             CadastroTela cadastroTela = new CadastroTela();
             cadastroTela.desenhar();
-        });
-
-        SwingUtilities.invokeLater(() -> {
-            try {
-                // Configurar o Look and Feel
-                UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         });
     }
 
@@ -60,26 +56,26 @@ public class CadastroTela extends JFrame {
 
     public void desenhar() {
         BackgroundPanel mainPanel = new BackgroundPanel(
-                "C:/Users/Amanda Oliveira/Documents/ProjetoInterface/FundoTelaTotal.png");
+                "C:/Users/Amanda Oliveira/Documents/ProjetoInterface/FundoBookSync.jpg");
 
         JLabel lbImagemLogo = new JLabel();
         ImageIcon imagemLogo = new ImageIcon("C:/Users/Amanda Oliveira/Documents/ProjetoInterface/BooksyncImagem.PNG");
         lbImagemLogo.setIcon(imagemLogo);
 
-        String lbBemVindo = "<html><center>\nSEJA BEM-VINDO ADMIN<br>Para realizar um novo cadastro, insira as informações do usuário:</center></html>";
+        String lbBemVindo = "<html><center>Seja bem-vindo Admin!<br>Para realizar um cadastro, insira as informacoes do usuario:</center></html>";
         JLabel lbDescricao = new JLabel(lbBemVindo);
         lbDescricao.setFont(font3);
         lbDescricao.setForeground(Color.WHITE);
         lbDescricao.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JLabel lbNomeUsuario = new JLabel("Nome de Usuário:");
+        JLabel lbNomeUsuario = new JLabel("Nome Completo:");
         lbNomeUsuario.setFont(font);
         lbNomeUsuario.setForeground(Color.WHITE);
 
         nomeUsuarioField = new JTextField();
         nomeUsuarioField.setFont(font2);
         nomeUsuarioField.setForeground(Color.WHITE);
-        Dimension novaDimensao = new Dimension(300, 40);
+        Dimension novaDimensao = new Dimension(300, 35);
         nomeUsuarioField.setPreferredSize(novaDimensao);
         nomeUsuarioField.setOpaque(false);
         nomeUsuarioField.setBorder(new RoundedBorder(10));
@@ -105,7 +101,6 @@ public class CadastroTela extends JFrame {
         idadeField.setPreferredSize(novaDimensao);
         idadeField.setOpaque(false);
         idadeField.setBorder(new RoundedBorder(10));
-        add(new JLabel("Idade:"));
 
         JLabel lbSexo = new JLabel("Sexo:");
         lbSexo.setFont(font);
@@ -115,11 +110,12 @@ public class CadastroTela extends JFrame {
         sexoComboBox = new JComboBox<>(sexos);
         sexoComboBox.setFont(font2);
         sexoComboBox.setForeground(Color.WHITE);
+        sexoComboBox.setPreferredSize(novaDimensao);
         sexoComboBox.setOpaque(false);
         sexoComboBox.setBorder(new RoundedBorder(10));
         sexoComboBox.setUI(new CustomComboBoxUI());
 
-        JLabel lbGenero = new JLabel("Gênero Favorito:");
+        JLabel lbGenero = new JLabel("Genero Favorito:");
         lbGenero.setFont(font);
         lbGenero.setForeground(Color.WHITE);
 
@@ -128,6 +124,7 @@ public class CadastroTela extends JFrame {
         generoFavoritoComboBox = new JComboBox<>(generos);
         generoFavoritoComboBox.setFont(font2);
         generoFavoritoComboBox.setForeground(Color.WHITE);
+        generoFavoritoComboBox.setPreferredSize(novaDimensao);
         generoFavoritoComboBox.setOpaque(false);
         generoFavoritoComboBox.setBorder(new RoundedBorder(10));
         generoFavoritoComboBox.setUI(new CustomComboBoxUI());
@@ -144,33 +141,35 @@ public class CadastroTela extends JFrame {
         senhaField.setBorder(new RoundedBorder(10));
         add(senhaField);
 
-        cadastrarButton = new JButton("Cadastrar");
-        add(cadastrarButton);
-
-        /*
-         * cadastrarButton.addActionListener(new ActionListener() {
-         * 
-         * @Override
-         * public void actionPerformed(ActionEvent e) {
-         * cadastrarUsuario();
-         * }
-         * });
-         */
+        JButton cadastrarButton = btnCadastrar();
+        cadastrarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Adicione aqui a lógica para tratar o clique no botão de cadastro
+                JOptionPane.showMessageDialog(null, "Botão Cadastrar clicado!");
+            }
+        });
 
         JPanel painel = new JPanel(new GridBagLayout());
-        painel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
+        painel.setBorder(BorderFactory.createEmptyBorder(40, 50, 50, 50));
         painel.setOpaque(false);
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 15, 15);
+        gbc.insets = new Insets(0, 2, 0, 15);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
 
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+
+        gbc.insets = new Insets(0, 2, 0, 15);
+        gbc.gridy = 0;
         painel.add(lbDescricao, gbc);
 
+        gbc.insets = new Insets(10, 2, 0, 15);
         gbc.gridy++;
-        gbc.gridwidth = 1;
         painel.add(lbNomeUsuario, gbc);
 
         gbc.gridy++;
@@ -208,16 +207,7 @@ public class CadastroTela extends JFrame {
         painel.add(senhaField, gbc);
 
         gbc.gridy++;
-        gbc.gridwidth = 1;
         painel.add(cadastrarButton, gbc);
-
-        gbc.gridy++;
-        gbc.gridwidth = 1;
-        painel.add(Box.createRigidArea(new Dimension(0, 20)), gbc);
-
-        JPanel acessosPanel = new JPanel(new GridLayout(2, 1, 5, 5));
-        acessosPanel.setOpaque(false);
-        acessosPanel.add(cadastrarButton);
 
         JPanel formBotoesPanel = new JPanel(new BorderLayout());
         formBotoesPanel.setOpaque(false);
@@ -235,35 +225,7 @@ public class CadastroTela extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
 
-        /*
-         * private void cadastrarUsuario() {
-         * try {
-         * ConexaoMysql db1 = new ConexaoMysql();
-         * String sql =
-         * "INSERT INTO user (name, login, idade, sex, genre_id, password) VALUES (?, ?, ?, ?, ?, ?)"
-         * ;
-         * PreparedStatement preparedStatement = connection.prepareStatement(sql);
-         * preparedStatement.setString(1, nomeUsuarioField.getText());
-         * preparedStatement.setString(2, emailField.getText());
-         * preparedStatement.setInt(3, Integer.parseInt(idadeField.getText()));
-         * preparedStatement.setString(4, (String) sexoComboBox.getSelectedItem());
-         * preparedStatement.setString(5, (String)
-         * generoFavoritoComboBox.getSelectedItem());
-         * preparedStatement.setString(6, new String(senhaField.getPassword()));
-         * preparedStatement.executeUpdate();
-         * db1.OpenDatabase();
-         * db1.Executaquery(sql);
-         * db1.CloseDatabase();
-         * 
-         * JOptionPane.showMessageDialog(this, "Usuário cadastrado com sucesso!");
-         * connection.close();
-         * } catch (SQLException e) {
-         * JOptionPane.showMessageDialog(this, "Erro ao cadastrar usuário: " +
-         * e.getMessage());
-         * }
-         * }
-         */
-
+        // Caixas de Opções, mudança de cor
         senhaField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -282,6 +244,21 @@ public class CadastroTela extends JFrame {
             }
         });
 
+    }
+
+    // Botão e Design
+    JButton btnCadastrar() {
+        JButton cadastrarButton = new RoundedButton("Cadastrar", 50);
+        cadastrarButton.setFont(font);
+        cadastrarButton.setForeground(Color.WHITE);
+        cadastrarButton.setBackground(new Color(249, 161, 61));
+
+        // Definação de dimensões do botão
+        cadastrarButton.setPreferredSize(new Dimension(100, 40));
+        cadastrarButton.setMinimumSize(new Dimension(100, 40));
+        cadastrarButton.setMaximumSize(new Dimension(100, 40));
+
+        return cadastrarButton;
     }
 
     // Design botão de alternativa
@@ -380,6 +357,35 @@ public class CadastroTela extends JFrame {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
+
+    // Classe RoundBorder caixas de botão
+    class RoundedButton extends JButton {
+        private int radius;
+
+        public RoundedButton(String label, int radius) {
+            super(label);
+            this.radius = radius;
+            setOpaque(false);
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setColor(getBackground());
+            g2d.fill(new RoundRectangle2D.Double(0, 0, getWidth() - 1, getHeight() - 1, radius, radius));
+            super.paintComponent(g2d);
+            g2d.dispose();
+        }
+
+        @Override
+        protected void paintBorder(Graphics g) {
+        }
+
+        @Override
+        public boolean contains(int x, int y) {
+            return new RoundRectangle2D.Double(0, 0, getWidth() - 1, getHeight() - 1, radius, radius).contains(x, y);
         }
     }
 
