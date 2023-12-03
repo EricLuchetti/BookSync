@@ -1,6 +1,9 @@
 package frontEnd.telas;
 
 import javax.swing.*;
+
+import backEnd.User;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,11 +11,11 @@ import java.awt.geom.RoundRectangle2D;
 
 public class MainMenuScreen {
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> createAndShowGUI());
+    public static void main(String[] args, User user) {
+        SwingUtilities.invokeLater(() -> createAndShowGUI(user));
     }
 
-    private static void createAndShowGUI() {
+    private static void createAndShowGUI(User user) {
         JFrame frame = new JFrame("Menu");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1300, 650);
@@ -48,7 +51,7 @@ public class MainMenuScreen {
         bookShowcaseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frontEnd.telas.LoginScreen.main(null);
+                frontEnd.telas.BookListScreen.main(null, user);
                 frame.dispose();
             }
         });
@@ -56,7 +59,7 @@ public class MainMenuScreen {
         addBookButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frontEnd.telas.LoginScreen.main(null);
+                //frontEnd.telas.LoginScreen.main(null, user);
                 frame.dispose();
             }
         });

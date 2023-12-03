@@ -3,6 +3,8 @@ package frontEnd.telas;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
 
+import backEnd.User;
+
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.event.ActionEvent;
@@ -15,10 +17,10 @@ public class LoginScreen extends JFrame {
     private Font font3 = new Font("Baskerville", Font.PLAIN, 22);
     JTextField tfLogin, tfSenha;
 
-    public static void main(String[] args) {
+    public static void main(String[] args, User user) {
         SwingUtilities.invokeLater(() -> {
             LoginScreen ga = new LoginScreen();
-            ga.desenhar();
+            ga.desenhar(user);
         });
     }
 
@@ -37,7 +39,7 @@ public class LoginScreen extends JFrame {
     }
 
     // Background
-    public void desenhar() {
+    public void desenhar(User user) {
         BackgroundPanel mainPanel = new BackgroundPanel("src\\frontEnd\\imgs\\FundoBookSync.jpg");
 
         // Imagem BookSync, lado esquerdo
@@ -78,6 +80,7 @@ public class LoginScreen extends JFrame {
         tfSenha.setPreferredSize(novaDimensao);
         tfSenha.setOpaque(false);
         tfSenha.setBorder(new RoundedBorder(10));
+        System.out.println();
 
         // Esqueceu sua senha
         JLabel lbEsqueceuSenha = new JLabel(
@@ -86,7 +89,7 @@ public class LoginScreen extends JFrame {
         lbEsqueceuSenha.setForeground(Color.WHITE);
 
         // Botão Acesso ao Sistema
-        JButton acessar = btnAcessar();
+        JButton acessar = btnAcessar(user);
 
         // Painel de Posições
         JPanel painel = new JPanel(new GridBagLayout());
@@ -182,7 +185,7 @@ public class LoginScreen extends JFrame {
     }
 
     // Desigin do Botão
-    JButton btnAcessar() {
+    JButton btnAcessar(User user) {
         RoundedButton acessar = new RoundedButton("Acessar", 50);
         acessar.setFont(font);
         acessar.setForeground(Color.WHITE);
@@ -201,7 +204,7 @@ public class LoginScreen extends JFrame {
                 String senha = tfSenha.getText();
 
                 // Call the login function from another file with login and senha values
-                backEnd.LoginHandler.login(login, senha);
+                backEnd.LoginHandler.login(login, senha, user);
 
                 // Close the current screen
                 dispose();

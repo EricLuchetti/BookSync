@@ -1,6 +1,9 @@
 package frontEnd.telas;
 
 import javax.swing.*;
+
+import backEnd.User;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,13 +44,13 @@ class RoundButton extends JButton {
 public class AdminMenuScreen {
 
     // Método principal que inicia o programa
-    public static void main(String[] args) {
+    public static void main(String[] args, User user) {
         // SwingUtilities.invokeLater() é usado para garantir que a interface gráfica seja construída em uma thread específica.
-        SwingUtilities.invokeLater(() -> createAndShowGUI());
+        SwingUtilities.invokeLater(() -> createAndShowGUI(user));
     }
 
     // Este método cria e exibe a interface gráfica
-    private static void createAndShowGUI() {
+    private static void createAndShowGUI(User user) {
         // Cria uma janela (frame) com o título "Menu"
         JFrame frame = new JFrame("Menu");
 
@@ -97,7 +100,7 @@ public class AdminMenuScreen {
         RoundButton newsButton = createStyledButton("Gerenciar livros", 300, 400, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frontEnd.telas.BookmanagementScreen.main(null);
+                frontEnd.telas.BookmanagementScreen.main(null, user);
                 frame.dispose();
             }
         });
@@ -105,21 +108,23 @@ public class AdminMenuScreen {
         RoundButton bookShowcaseButton = createStyledButton("Vitrine de Livros", 300, 400, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                BookListScreen.main(null, user);
+                frame.dispose();
             }
         });
 
         RoundButton addBookButton = createStyledButton("Adicionar Livro", 300, 400, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                //TODO
+                frame.dispose();
             }
         });
 
         RoundButton registerButton = createStyledButton("Cadastro Usuário", 300, 400, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                //TODO
                 frame.dispose();
             }
         });

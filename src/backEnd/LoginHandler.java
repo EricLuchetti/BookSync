@@ -9,7 +9,7 @@ public class LoginHandler {
 
     //Dentro dessa Classe temos o script de login
 
-    public static Void login(String username, String password) {
+    public static Void login(String username, String password, User user) {
         String encryptedPassword = Services.encryptPassword(password);
 
         try (Connection connection = DatabaseConnector.connect()) {
@@ -20,12 +20,12 @@ public class LoginHandler {
 
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
-                        System.out.println(resultSet.getString("admin"));
-                        if (Integer.parseInt(resultSet.getString("admin"))==0) {
-                            frontEnd.telas.MainMenuScreen.main(null);
+                        user.setUserFromDBRow(resultSet);
+                        if (user.isAdmin()) {
+                            frontEnd.telas.AdminMenuScreen.main(null, user);
                         }
                         else{
-                            frontEnd.telas.AdminMenuScreen.main(null);
+                            frontEnd.telas.MainMenuScreen.main(null, user);
                         }
                     } else {
                         //TODO tela de erro de login

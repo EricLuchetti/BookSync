@@ -44,22 +44,9 @@ public class CoverHandler {
                 data[row][2] = resultSet.getString("publisher");
 
                 InputStream inputStream = resultSet.getBinaryStream("cover");
-                File tempFile = File.createTempFile("tempImage", ".jpeg");
-                    try (FileOutputStream fileOutputStream = new FileOutputStream(tempFile)) {
-                        byte[] buffer = new byte[1024];
-                        int bytesRead;
-                        while ((bytesRead = inputStream.read(buffer)) != -1) {
-                            fileOutputStream.write(buffer, 0, bytesRead);
-                        }
-                        System.out.println("JPEG file retrieved from the database and stored temporarily.");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                String tempFilePath = saveImageAsTempFile(inputStream);
 
-                    // Optional: Set the temporary file to delete on exit
-                    tempFile.deleteOnExit();
-
-                data[row][4] = new ImageIcon(tempFile.getAbsolutePath());
+                data[row][4] = new ImageIcon(tempFilePath);
                 if (data[row][4].toString().length() > 0){
                     data[row][3] = true;
                 }else{
@@ -113,17 +100,33 @@ public class CoverHandler {
         }
     }
 
+    public static String saveImageAsTempFile(InputStream inputStream) {
+        if (inputStream == null){
+            return "";
+        }
+        String tempFilePath = null;
+        try {
+            File tempFile = File.createTempFile("tempImage", ".jpeg");
+            try (FileOutputStream fileOutputStream = new FileOutputStream(tempFile)) {
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    fileOutputStream.write(buffer, 0, bytesRead);
+                }
+                System.out.println("JPEG file retrieved from the database and stored temporarily.");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            tempFile.deleteOnExit();
+            tempFilePath = tempFile.getAbsolutePath();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return tempFilePath;
+    }
+
+
     public static void main(String[] args) throws IOException {
         // Example usage
-        Object[][] books = getNonPublicBooks();
-        for (Object[] book : books) {
-            for (Object value : book) {
-                System.out.print(value + "\t");
-            }
-            System.out.println();
-        }
-
-        // Example updateBookCover usage
-        updateBookCover("path/to/image.jpg", "The Catcher in the Rye");
     }
 }

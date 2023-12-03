@@ -8,11 +8,27 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.*;
 
+import backEnd.User;
+
 public class BookmanagementScreen extends JFrame {
     private JTable table;
     private DefaultTableModel model;
 
-    public BookmanagementScreen(Object[][] data) {
+    
+    public static void main(String[] args, User user) {
+        SwingUtilities.invokeLater(() -> {
+            try {
+                new BookmanagementScreen(backEnd.CoverHandler.getNonPublicBooks(), user);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        });
+    }
+
+
+
+    public BookmanagementScreen(Object[][] data, User user) {
         setTitle("Gerenciamento de Livros");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 400);
@@ -62,7 +78,7 @@ public class BookmanagementScreen extends JFrame {
                             e1.printStackTrace();
                         }
                         dispose();
-                        frontEnd.telas.BookmanagementScreen.main(null);
+                        frontEnd.telas.BookmanagementScreen.main(null, user);
                     }
                 }
             }
@@ -91,7 +107,7 @@ public class BookmanagementScreen extends JFrame {
                 if (rowInModel != -1) {
                     backEnd.Services.removeBook(model.getValueAt(rowInModel,0).toString());
                     dispose();
-                    frontEnd.telas.BookmanagementScreen.main(null);
+                    frontEnd.telas.BookmanagementScreen.main(null, user);
                 }
             }
         });
@@ -103,14 +119,14 @@ public class BookmanagementScreen extends JFrame {
                 int rowInModel = table.convertRowIndexToModel(rowInView);
                 backEnd.BookHandler.publishBook(model.getValueAt(rowInModel,0).toString());
                 dispose();
-                frontEnd.telas.BookmanagementScreen.main(null);
+                frontEnd.telas.BookmanagementScreen.main(null, user);
             }
         });
         JButton returnButton = new JButton("Voltar para o Menu");
         returnButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 dispose();
-                frontEnd.telas.AdminMenuScreen.main(null);
+                frontEnd.telas.AdminMenuScreen.main(null, user);
             }
         });
 
@@ -189,19 +205,7 @@ public class BookmanagementScreen extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            try {
-                new BookmanagementScreen(backEnd.CoverHandler.getNonPublicBooks());
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        });
-    }
 }
-
-
 
 
 
