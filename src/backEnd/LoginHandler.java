@@ -23,6 +23,7 @@ public class LoginHandler {
                         user.setUserFromDBRow(resultSet);
                         if (user.isAdmin()) {
                             frontEnd.telas.AdminMenuScreen.main(null, user);
+                            System.out.println(user.toString());
                         }
                         else{
                             frontEnd.telas.MainMenuScreen.main(null, user);

@@ -29,8 +29,18 @@ CREATE TABLE IF NOT EXISTS books (
     review_score DECIMAL(3,2),
     public BOOLEAN NOT NULL,
     cover MEDIUMBLOB,
+    synopsis CLOB,
     genre_id INT,
     CONSTRAINT fk_genre_id_books FOREIGN KEY (genre_id) REFERENCES genres(id)
+);
+
+CREATE TABLE book_reviews (
+    review_id SERIAL PRIMARY KEY,
+    book_id INT,
+    user_id INT,
+    book_review CLOB,
+    FOREIGN KEY (book_id) REFERENCES books(book_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 -- Create N to N Relationship Tables (users_genres and books_genres)

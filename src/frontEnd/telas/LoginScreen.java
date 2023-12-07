@@ -6,30 +6,41 @@ import javax.swing.border.AbstractBorder;
 import backEnd.User;
 
 import java.awt.*;
-import java.awt.geom.RoundRectangle2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.RoundRectangle2D;
 
 public class LoginScreen extends JFrame {
     // Fontes do sistema
     private Font font = new Font("Arial", Font.BOLD, 16);
-    private Font font2 = new Font("Arial", Font.ITALIC, 18);
-    private Font font3 = new Font("Baskerville", Font.PLAIN, 22);
+    private Font font2 = new Font("Arial", Font.PLAIN, 18);
+    private Font font3 = new Font("Baskerville", Font.PLAIN, 20);
+    private Font font4 = new Font("Arial", Font.ITALIC, 14);
+
     JTextField tfLogin, tfSenha;
 
-    public static void main(String[] args, User user) {
-        SwingUtilities.invokeLater(() -> {
-            LoginScreen ga = new LoginScreen();
-            ga.desenhar(user);
-        });
+    public static void main(String[] args,User user) {
+        try {
+            SwingUtilities.invokeLater(() -> {
+                LoginScreen ga = new LoginScreen(user);
+                ga.desenhar(user);
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public LoginScreen() {
+    public LoginScreen(User user) {
+        configurarJanela(user);
+    }
+
+    // Especificações da Janela e Icone
+    private void configurarJanela(User user) {
         this.setTitle("BookSync");
         this.setSize(1040, 650);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
-        // Icone do Sistema
+
         try {
             ImageIcon icon = new ImageIcon("src\\frontEnd\\imgs\\BooksyncImagem.PNG");
             setIconImage(icon.getImage());
@@ -40,22 +51,23 @@ public class LoginScreen extends JFrame {
 
     // Background
     public void desenhar(User user) {
+        // Configuração do painel de fundo
         BackgroundPanel mainPanel = new BackgroundPanel("src\\frontEnd\\imgs\\FundoBookSync.jpg");
 
-        // Imagem BookSync, lado esquerdo
+        // Configuração da imagem do logo, esquerda
         JLabel lbImagemLogo = new JLabel();
         ImageIcon imagemLogo = new ImageIcon("src\\frontEnd\\imgs\\BooksyncImagem.PNG");
         lbImagemLogo.setIcon(imagemLogo);
 
-        // Bem Vindo
+        // Configuração da mensagem de boas-vindas
         String lbBemVindo = "<html><center>\nSEJA BEM-VINDO<br>Caso tenha cadastro, Acesse sua conta:</center></html>";
         JLabel lbDescricao = new JLabel(lbBemVindo);
         lbDescricao.setFont(font3);
         lbDescricao.setForeground(Color.WHITE);
         lbDescricao.setHorizontalAlignment(SwingConstants.CENTER);
 
-        // Login
-        JLabel lbLogin = new JLabel("  Login");
+        // Configuração dos campos de login e senha
+        JLabel lbLogin = new JLabel("  E-mail");
         lbLogin.setFont(font);
         lbLogin.setForeground(Color.WHITE);
 
@@ -68,7 +80,6 @@ public class LoginScreen extends JFrame {
         tfLogin.setOpaque(false);
         tfLogin.setBorder(new RoundedBorder(10));
 
-        // Senha
         JLabel lbSenha = new JLabel("  Senha");
         lbSenha.setFont(font);
         lbSenha.setForeground(Color.WHITE);
@@ -80,23 +91,36 @@ public class LoginScreen extends JFrame {
         tfSenha.setPreferredSize(novaDimensao);
         tfSenha.setOpaque(false);
         tfSenha.setBorder(new RoundedBorder(10));
-        System.out.println();
 
-        // Esqueceu sua senha
+        // Configuração do texto de recuperação de senha
         JLabel lbEsqueceuSenha = new JLabel(
                 "<html><center>Esqueceu sua senha? Fale com o administrador.</center></html>");
-        lbEsqueceuSenha.setFont(font);
+        lbEsqueceuSenha.setFont(font4);
         lbEsqueceuSenha.setForeground(Color.WHITE);
 
-        // Botão Acesso ao Sistema
-        JButton acessar = btnAcessar(user);
+        // Configuração do botão de acesso ao sistema
+        JButton acessar = btnAcessar();
+        acessar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Get the values from tfLogin and tfSenha
+                String login = tfLogin.getText();
+                String senha = tfSenha.getText();
 
-        // Painel de Posições
+                // Call the login function from another file with login and senha values
+                backEnd.LoginHandler.login(login, senha, user);
+
+                // Close the current screen
+                dispose();
+            }
+        });
+
+        // Configuração do layout
         JPanel painel = new JPanel(new GridBagLayout());
         painel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
         painel.setOpaque(false);
 
-        // Posição dos elementos
+        // Configuração da posição dos elementos
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 15, 5);
         gbc.gridx = 0;
@@ -125,39 +149,33 @@ public class LoginScreen extends JFrame {
 
         gbc.gridy = 5;
         gbc.gridwidth = 2;
+        gbc.insets = new Insets(5, 5, 15, 5);
         painel.add(acessar, gbc);
 
-        gbc.gridy++;
-        gbc.gridwidth = 2;
-        painel.add(Box.createRigidArea(new Dimension(0, 20)), gbc);
-
-        // Painel com Botão
+        // Configuração painel com Botão Acessar
         JPanel acessosPanel = new JPanel(new GridLayout(2, 1, 5, 5));
         acessosPanel.setOpaque(false);
         acessosPanel.add(acessar);
 
-        // Painel Esqueci a Senha
+        // Configuração do painel de Botão Acessar e Painel EsqueceuSenha
         JPanel esqueceuSenhaPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         esqueceuSenhaPanel.setOpaque(false);
         esqueceuSenhaPanel.add(lbEsqueceuSenha);
+        painel.add(acessosPanel, gbc);
         acessosPanel.add(esqueceuSenhaPanel);
 
-        gbc.gridy++;
-        gbc.gridwidth = 2;
-        painel.add(acessosPanel, gbc);
-
-        // Painel de Posição
+        // Painel de Posição do Elementos
         JPanel painelPosicao = new JPanel(new BorderLayout());
         painelPosicao.setOpaque(false);
         painelPosicao.add(painel, BorderLayout.CENTER);
 
-        // Posições do painel e imagem
+        // Configuração de Posições do painel principal
         JPanel contentPanel = new JPanel(new BorderLayout());
         contentPanel.setOpaque(false);
         contentPanel.add(lbImagemLogo, BorderLayout.WEST);
         contentPanel.add(painelPosicao, BorderLayout.CENTER);
 
-        // Painel Terminado e centralizado
+        // Configuração do painel final - Visualização
         setContentPane(mainPanel);
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(contentPanel, BorderLayout.CENTER);
@@ -166,7 +184,7 @@ public class LoginScreen extends JFrame {
         setVisible(true);
     }
 
-    // Design, caixa de Login
+    // Design - Caixa de Login
     JTextField createRoundedTextField(String placeholder, int radius) {
         JTextField tf = new JTextField(placeholder);
         tf.setFont(font2);
@@ -175,7 +193,7 @@ public class LoginScreen extends JFrame {
         return tf;
     }
 
-    // Design, caixa de Senha
+    // Design - Caixa de Senha
     JPasswordField createRoundedPasswordField(String placeholder, int radius) {
         JPasswordField tf = new JPasswordField(placeholder);
         tf.setFont(font2);
@@ -184,8 +202,8 @@ public class LoginScreen extends JFrame {
         return tf;
     }
 
-    // Desigin do Botão
-    JButton btnAcessar(User user) {
+    // Desigin - Botão Acessar
+    JButton btnAcessar() {
         RoundedButton acessar = new RoundedButton("Acessar", 50);
         acessar.setFont(font);
         acessar.setForeground(Color.WHITE);
@@ -196,25 +214,10 @@ public class LoginScreen extends JFrame {
         acessar.setMinimumSize(new Dimension(100, 40));
         acessar.setMaximumSize(new Dimension(100, 40));
 
-        acessar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Get the values from tfLogin and tfSenha
-                String login = tfLogin.getText();
-                String senha = tfSenha.getText();
-
-                // Call the login function from another file with login and senha values
-                backEnd.LoginHandler.login(login, senha, user);
-
-                // Close the current screen
-                dispose();
-            }
-        });
-
         return acessar;
     }
 
-    // Fundo da tela, background
+    // Fundo da tela - Background
     class BackgroundPanel extends JPanel {
         private Image backgroundImage;
 
@@ -229,7 +232,7 @@ public class LoginScreen extends JFrame {
         }
     }
 
-    // Classe RoundBorder caixas de botão
+    // Classe RoundBorder - Caixas de Botão Acessar
     class RoundedButton extends JButton {
         private int radius;
 
@@ -258,7 +261,7 @@ public class LoginScreen extends JFrame {
         }
     }
 
-    // Classe RoundBorder de caixas de textos
+    // Classe RoundBorder - Caixas de Texto
     class RoundedBorder extends AbstractBorder {
         private int radius;
 
