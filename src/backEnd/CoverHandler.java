@@ -6,17 +6,23 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.swing.ImageIcon;
 
 public class CoverHandler {
 
+    // Obtém os livros não públicos e suas informações de capa para exibição
+    // Retorna uma matriz de objetos representando os detalhes dos livros
     public static Object[][] getNonPublicBooks() throws IOException {
         Object[][] data = null;
-        String[] columns = { "Título", "Autor", "Editora", "Capa Adicionada", "Imagem" };
+        String[] columns = { "Título", "Capa Adicionada", "Imagem" };
         String queryCount = "SELECT Count(*) FROM books WHERE public = false";
-        String query = "SELECT title, author, publisher, public, cover FROM books WHERE public = false";
+        String query = "SELECT title, cover FROM books WHERE public = false";
         int rowCount = 0;
 
         try (Connection connection = DatabaseConnector.connect();
@@ -33,24 +39,20 @@ public class CoverHandler {
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(query)) {
 
-            // Counting the number of rows
-
             data = new Object[rowCount][columns.length];
             int row = 0;
 
             while (resultSet.next()) {
                 data[row][0] = resultSet.getString("title");
-                data[row][1] = resultSet.getString("author");
-                data[row][2] = resultSet.getString("publisher");
 
                 InputStream inputStream = resultSet.getBinaryStream("cover");
                 String tempFilePath = saveImageAsTempFile(inputStream);
 
-                data[row][4] = new ImageIcon(tempFilePath);
-                if (data[row][4].toString().length() > 0){
-                    data[row][3] = true;
+                data[row][2] = new ImageIcon(tempFilePath);
+                if (data[row][2].toString().length() > 0){
+                    data[row][1] = true;
                 }else{
-                    data[row][3] = false;
+                    data[row][1] = false;
                 }
                 row++;
             }
@@ -60,12 +62,16 @@ public class CoverHandler {
         return data;
     }
 
+    // Atualiza a capa do livro no banco de dados
+    // Parâmetros:
+    // - filePath: caminho do arquivo da nova capa
+    // - bookName: nome do livro para o qual a capa será atualizada
     public static void updateBookCover(String filePath, String bookName) throws IOException {
 
-        if (backEnd.Services.isValidJpeg(filePath)) {
+        if (Services.isValidJpeg(filePath)) {
 
             try (Connection connection = DatabaseConnector.connect()) {
-                // Find the book ID
+                // Encontra o ID do livro
                 int bookId = -1;
                 String query = "SELECT id FROM books WHERE title = ?";
                 try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -78,7 +84,7 @@ public class CoverHandler {
                 }
 
                 if (bookId != -1) {
-                    // Update cover and set book as public
+                    // Atualiza a capa e define o livro como público
                     String updateQuery = "UPDATE books SET cover = ? WHERE id = ?";
                     try (PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
                         File file = new File(filePath);
@@ -86,13 +92,12 @@ public class CoverHandler {
                             updateStatement.setBlob(1, inputStream);
                             updateStatement.setInt(2, bookId);
                             updateStatement.executeUpdate();
-                            System.out.println("Book cover updated successfully.");
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }
                     }
                 } else {
-                    System.out.println("Book not found.");
+                    System.out.println("Livro não encontrado.");
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -100,6 +105,10 @@ public class CoverHandler {
         }
     }
 
+    // Salva uma imagem como arquivo temporário
+    // Parâmetro:
+    // - inputStream: fluxo de entrada da imagem
+    // Retorna o caminho do arquivo temporário
     public static String saveImageAsTempFile(InputStream inputStream) {
         if (inputStream == null){
             return "";
@@ -113,7 +122,6 @@ public class CoverHandler {
                 while ((bytesRead = inputStream.read(buffer)) != -1) {
                     fileOutputStream.write(buffer, 0, bytesRead);
                 }
-                System.out.println("JPEG file retrieved from the database and stored temporarily.");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -125,8 +133,7 @@ public class CoverHandler {
         return tempFilePath;
     }
 
-
     public static void main(String[] args) throws IOException {
-        // Example usage
+        // Uso de exemplo
     }
 }

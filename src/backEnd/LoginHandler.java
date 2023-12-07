@@ -5,10 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.JOptionPane;
+
 public class LoginHandler {
 
-    //Dentro dessa Classe temos o script de login
-
+    // Esta função realiza o processo de login do usuário
+    // Recebe um nome de usuário, uma senha e um objeto do tipo User como parâmetros
+    // Não retorna valor
     public static Void login(String username, String password, User user) {
         String encryptedPassword = Services.encryptPassword(password);
 
@@ -23,26 +26,23 @@ public class LoginHandler {
                         user.setUserFromDBRow(resultSet);
                         if (user.isAdmin()) {
                             frontEnd.telas.AdminMenuScreen.main(null, user);
-                            System.out.println(user.toString());
-                        }
-                        else{
+                        } else {
                             frontEnd.telas.MainMenuScreen.main(null, user);
                         }
                     } else {
-                        //TODO tela de erro de login
+                        JOptionPane.showMessageDialog(null, "Login ou Senha Incorretos, por favor tente novamente!");
+                        frontEnd.telas.LoginScreen.main(null, user);
                     }
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    return null;
-}
+        return null;
+    }
 
-    
-//DEBUG
+    //DEBUG
     public static void main(String[] args) {
-        //String result = login("john_doe", "password123");
-        //System.out.println(result);
+
     }
 }

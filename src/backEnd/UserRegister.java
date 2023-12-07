@@ -5,15 +5,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.JOptionPane;
+
 public class UserRegister {
+
+    // Registra um novo usuário no sistema
     public static void registerUser(String name, String sex, String login, String password, int[] genreIds) {
-        // Check if the user with the same login already exists
+        // Verifica se o usuário com o mesmo login já existe
         if (!userExists(login)) {
-            // If the user doesn't exist, proceed with registration
+            // Se o usuário não existir, proceda com o registro
             String encryptedPassword = Services.encryptPassword(password);
 
             try (Connection connection = DatabaseConnector.connect()) {
-                // Insert user into the users table
+                // Insere o usuário na tabela users
                 String insertUserQuery = "INSERT INTO users (name, sex, admin, login, password) VALUES (?, ?, 0, ?, ?)";
                 try (PreparedStatement insertUserStatement = connection.prepareStatement(insertUserQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
                     insertUserStatement.setString(1, name);
@@ -24,12 +28,12 @@ public class UserRegister {
                     int affectedRows = insertUserStatement.executeUpdate();
 
                     if (affectedRows > 0) {
-                        // User inserted successfully, get the generated user ID
+                        // Usuário inserido com sucesso, obtém o ID de usuário gerado
                         ResultSet generatedKeys = insertUserStatement.getGeneratedKeys();
                         if (generatedKeys.next()) {
                             int userId = generatedKeys.getInt(1);
 
-                            // Insert genre_ids into the user_genres table
+                            // Insere os genre_ids na tabela users_genres
                             String insertGenresQuery = "INSERT INTO users_genres (user_id, genre_id) VALUES (?, ?)";
                             try (PreparedStatement insertGenresStatement = connection.prepareStatement(insertGenresQuery)) {
                                 for (int genreId : genreIds) {
@@ -45,10 +49,12 @@ public class UserRegister {
                 e.printStackTrace();
             }
         } else {
-            System.out.println("User with the same login already exists. Registration failed.");
+            JOptionPane.showMessageDialog(null, "Usuário com o mesmo login já existe. Falha no registro.");
         }
+        JOptionPane.showMessageDialog(null, "Usuário registrado com sucesso!");
     }
 
+    // Verifica se o usuário já existe com base no login
     private static boolean userExists(String login) {
         try (Connection connection = DatabaseConnector.connect()) {
             String checkUserQuery = "SELECT COUNT(*) FROM users WHERE login = ?";
@@ -67,8 +73,9 @@ public class UserRegister {
         return false;
     }
 
+    // Método principal para exemplo de uso
     public static void main(String[] args) {
-        // Example usage:
+        // Exemplo de uso:
         String name = "John Doe";
         String sex = "Male";
         String login = "john_doe";

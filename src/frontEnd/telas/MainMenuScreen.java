@@ -11,10 +11,12 @@ import java.awt.geom.RoundRectangle2D;
 
 public class MainMenuScreen {
 
+    // Inicializa a tela principal do menu
     public static void main(String[] args, User user) {
         SwingUtilities.invokeLater(() -> createAndShowGUI(user));
     }
 
+    // Cria e exibe a interface gráfica do menu principal
     private static void createAndShowGUI(User user) {
         JFrame frame = new JFrame("Menu");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -59,7 +61,7 @@ public class MainMenuScreen {
         addBookButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //frontEnd.telas.LoginScreen.main(null, user);
+                AddBookScreen.main(null, user);
                 frame.dispose();
             }
         });
@@ -73,6 +75,7 @@ public class MainMenuScreen {
         frame.setVisible(true);
     }
 
+    // Cria botões redondos estilizados para a interface
     private static RoundButton createStyledButton(String text, int width, int height) {
         RoundButton button = new RoundButton(text);
         button.setFont(new Font("Arial", Font.BOLD, 25));
@@ -83,6 +86,7 @@ public class MainMenuScreen {
     }
 }
 
+// Classe RoundButton - botões redondos estilizados
 class RoundButton extends JButton {
 
     public RoundButton(String label) {

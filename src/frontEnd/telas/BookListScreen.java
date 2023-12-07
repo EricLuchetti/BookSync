@@ -3,62 +3,77 @@ package frontEnd.telas;
 import javax.swing.*;
 
 import backEnd.BookHandler;
-import backEnd.CoverHandler;
 import backEnd.User;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.InputStream;
 
-public class BookListScreen extends JFrame{
+public class BookListScreen extends JFrame {
 
-    public BookListScreen(Object[][] books, User user) {
-        setTitle("Book List");
+    private static final int COVER_WIDTH = 100;
+    private static final int COVER_HEIGHT = 150;
+
+    // Inicializa a tela da lista de livros com base no usuário fornecido
+    public BookListScreen(User user) {
+        Object[][] books = (Object[][]) BookHandler.listBooks(this, user);
+
+        setTitle("Lista de Livros");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 400);
+        setSize(700, 1000);
         setLayout(new BorderLayout());
 
-        // Create a panel to hold the list of books
-        JPanel bookPanel = new JPanel();
-        bookPanel.setLayout(new BoxLayout(bookPanel, BoxLayout.Y_AXIS));
+        // Cria um painel para a lista de livros
+        JPanel bookPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 3;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Create a button above the list
-        JButton myButton = new JButton("Voltar ao menu");
-        myButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (user.isAdmin()){
-                    AdminMenuScreen.main(null, user);
-                    dispose();
-                }else{
-                    MainMenuScreen.main(null, user);
-                    dispose();
-                }
+        // Cria um botão acima da lista
+        JButton backButton = new JButton("Voltar ao Menu");
+        backButton.addActionListener(e -> {
+            if (user.isAdmin()) {
+                AdminMenuScreen.main(null, user);
+            } else {
+                MainMenuScreen.main(null, user);
             }
+            dispose();
         });
 
-        // Add the button above the book list
-        add(myButton, BorderLayout.NORTH);
+        // Adiciona o botão acima da lista de livros
+        add(backButton, BorderLayout.NORTH);
 
-        // Create book entries
-        
+        // Cria entradas para cada livro
         for (Object[] book : books) {
-            //String imagePath = (String) book[0];
-            String title = (String) book[1];
-            JButton detailsButton = (JButton) book[2];
-
             ImageIcon imageIcon = (ImageIcon) book[0];
-            JLabel imageLabel = new JLabel(imageIcon);
+            Image image = imageIcon.getImage().getScaledInstance(COVER_WIDTH, COVER_HEIGHT, Image.SCALE_SMOOTH);
+            ImageIcon scaledImageIcon = new ImageIcon(image);
+
+            String title = (String) book[1];
+            JButton detailsButton = (JButton) book[5];
+
+            JLabel imageLabel = new JLabel(scaledImageIcon);
             JLabel titleLabel = new JLabel(title);
 
-            // Create a panel for each book entry
+            // Cria um painel para cada entrada de livro
             JPanel bookEntryPanel = new JPanel(new BorderLayout());
+            bookEntryPanel.setPreferredSize(new Dimension(600, 180));
+            bookEntryPanel.setMaximumSize(new Dimension(Short.MAX_VALUE, 180));
+            bookEntryPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
             bookEntryPanel.add(imageLabel, BorderLayout.WEST);
             bookEntryPanel.add(titleLabel, BorderLayout.CENTER);
             bookEntryPanel.add(detailsButton, BorderLayout.EAST);
 
-            bookPanel.add(bookEntryPanel);
+            // Adiciona uma linha separadora entre as linhas
+            if (gbc.gridy > 0) {
+                JSeparator separator = new JSeparator(SwingConstants.HORIZONTAL);
+                bookPanel.add(separator, gbc);
+                gbc.gridy++;
+            }
+
+            bookPanel.add(bookEntryPanel, gbc);
+            gbc.gridy++;
         }
 
         JScrollPane scrollPane = new JScrollPane(bookPanel);
@@ -67,10 +82,8 @@ public class BookListScreen extends JFrame{
         setVisible(true);
     }
 
+    // Método principal para exibir a tela da lista de livros
     public static void main(String[] args, User user) {
-        SwingUtilities.invokeLater(() -> new BookListScreen((Object[][]) BookHandler.listBooks(user), user));
+        SwingUtilities.invokeLater(() -> new BookListScreen(user));
     }
 }
-
-
-

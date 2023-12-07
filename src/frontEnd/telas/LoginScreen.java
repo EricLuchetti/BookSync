@@ -1,9 +1,11 @@
 package frontEnd.telas;
 
 import javax.swing.*;
-import javax.swing.border.AbstractBorder;
-
 import backEnd.User;
+
+import backEnd.Services.RoundedBorder;
+
+import backEnd.Services.BackgroundPanel;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,12 +14,12 @@ import java.awt.geom.RoundRectangle2D;
 
 public class LoginScreen extends JFrame {
     // Fontes do sistema
-    private Font font = new Font("Arial", Font.BOLD, 16);
-    private Font font2 = new Font("Arial", Font.PLAIN, 18);
-    private Font font3 = new Font("Baskerville", Font.PLAIN, 20);
-    private Font font4 = new Font("Arial", Font.ITALIC, 14);
+    private Font systemFont = new Font("Arial", Font.BOLD, 16);
+    private Font plainSystemFont = new Font("Arial", Font.PLAIN, 18);
+    private Font baskervilleFont = new Font("Baskerville", Font.PLAIN, 20);
+    private Font italicSystemFont= new Font("Arial", Font.ITALIC, 14);
 
-    JTextField tfLogin, tfSenha;
+    JTextField loginField, passwordField;
 
     public static void main(String[] args,User user) {
         try {
@@ -51,61 +53,61 @@ public class LoginScreen extends JFrame {
 
     // Background
     public void desenhar(User user) {
-        // Configuração do painel de fundo
-        BackgroundPanel mainPanel = new BackgroundPanel("src\\frontEnd\\imgs\\FundoBookSync.jpg");
+        // Configuração do panel de fundo
+        BackgroundPanel backgroundPanel = new BackgroundPanel("src\\frontEnd\\imgs\\FundoBookSync.jpg");
 
         // Configuração da imagem do logo, esquerda
-        JLabel lbImagemLogo = new JLabel();
-        ImageIcon imagemLogo = new ImageIcon("src\\frontEnd\\imgs\\BooksyncImagem.PNG");
-        lbImagemLogo.setIcon(imagemLogo);
+        JLabel imageLogoLabel = new JLabel();
+        ImageIcon logoImage = new ImageIcon("src\\frontEnd\\imgs\\BooksyncImagem.PNG");
+        imageLogoLabel.setIcon(logoImage);
 
         // Configuração da mensagem de boas-vindas
-        String lbBemVindo = "<html><center>\nSEJA BEM-VINDO<br>Caso tenha cadastro, Acesse sua conta:</center></html>";
-        JLabel lbDescricao = new JLabel(lbBemVindo);
-        lbDescricao.setFont(font3);
-        lbDescricao.setForeground(Color.WHITE);
-        lbDescricao.setHorizontalAlignment(SwingConstants.CENTER);
+        String welcomeText = "<html><center>\nSEJA BEM-VINDO<br>Caso tenha cadastro, Acesse sua conta:</center></html>";
+        JLabel descriptionLabel = new JLabel(welcomeText);
+        descriptionLabel.setFont(baskervilleFont);
+        descriptionLabel.setForeground(Color.WHITE);
+        descriptionLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         // Configuração dos campos de login e senha
-        JLabel lbLogin = new JLabel("  E-mail");
-        lbLogin.setFont(font);
-        lbLogin.setForeground(Color.WHITE);
+        JLabel loginLabel = new JLabel("  E-mail");
+        loginLabel.setFont(systemFont);
+        loginLabel.setForeground(Color.WHITE);
 
-        tfLogin = new JTextField();
-        tfLogin.setFont(font2);
-        tfLogin.setBackground(Color.WHITE);
-        tfLogin.setForeground(Color.WHITE);
+        loginField = new JTextField();
+        loginField.setFont(plainSystemFont);
+        loginField.setBackground(Color.WHITE);
+        loginField.setForeground(Color.WHITE);
         Dimension novaDimensao = new Dimension(300, 40);
-        tfLogin.setPreferredSize(novaDimensao);
-        tfLogin.setOpaque(false);
-        tfLogin.setBorder(new RoundedBorder(10));
+        loginField.setPreferredSize(novaDimensao);
+        loginField.setOpaque(false);
+        loginField.setBorder(new RoundedBorder(10));
 
-        JLabel lbSenha = new JLabel("  Senha");
-        lbSenha.setFont(font);
-        lbSenha.setForeground(Color.WHITE);
+        JLabel passwordLabel = new JLabel("  Senha");
+        passwordLabel.setFont(systemFont);
+        passwordLabel.setForeground(Color.WHITE);
 
-        tfSenha = new JPasswordField();
-        tfSenha.setFont(font2);
-        tfSenha.setBackground(Color.WHITE);
-        tfSenha.setForeground(Color.WHITE);
-        tfSenha.setPreferredSize(novaDimensao);
-        tfSenha.setOpaque(false);
-        tfSenha.setBorder(new RoundedBorder(10));
+        passwordField = new JPasswordField();
+        passwordField.setFont(plainSystemFont);
+        passwordField.setBackground(Color.WHITE);
+        passwordField.setForeground(Color.WHITE);
+        passwordField.setPreferredSize(novaDimensao);
+        passwordField.setOpaque(false);
+        passwordField.setBorder(new RoundedBorder(10));
 
         // Configuração do texto de recuperação de senha
-        JLabel lbEsqueceuSenha = new JLabel(
+        JLabel forgotPasswordLabel = new JLabel(
                 "<html><center>Esqueceu sua senha? Fale com o administrador.</center></html>");
-        lbEsqueceuSenha.setFont(font4);
-        lbEsqueceuSenha.setForeground(Color.WHITE);
+        forgotPasswordLabel.setFont(italicSystemFont);
+        forgotPasswordLabel.setForeground(Color.WHITE);
 
         // Configuração do botão de acesso ao sistema
-        JButton acessar = btnAcessar();
-        acessar.addActionListener(new ActionListener() {
+        JButton accessButton = btnAcessar();
+        accessButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Get the values from tfLogin and tfSenha
-                String login = tfLogin.getText();
-                String senha = tfSenha.getText();
+                // Get the values from loginField and passwordField
+                String login = loginField.getText();
+                String senha = passwordField.getText();
 
                 // Call the login function from another file with login and senha values
                 backEnd.LoginHandler.login(login, senha, user);
@@ -116,9 +118,9 @@ public class LoginScreen extends JFrame {
         });
 
         // Configuração do layout
-        JPanel painel = new JPanel(new GridBagLayout());
-        painel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
-        painel.setOpaque(false);
+        JPanel panel = new JPanel(new GridBagLayout());
+        panel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
+        panel.setOpaque(false);
 
         // Configuração da posição dos elementos
         GridBagConstraints gbc = new GridBagConstraints();
@@ -128,117 +130,102 @@ public class LoginScreen extends JFrame {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.gridwidth = 2;
 
-        painel.add(lbDescricao, gbc);
+        panel.add(descriptionLabel, gbc);
 
         gbc.gridy = 1;
         gbc.gridwidth = 1;
-        painel.add(lbLogin, gbc);
+        panel.add(loginLabel, gbc);
 
         gbc.gridy = 2;
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        painel.add(tfLogin, gbc);
+        panel.add(loginField, gbc);
 
         gbc.gridy = 3;
         gbc.gridwidth = 1;
-        painel.add(lbSenha, gbc);
+        panel.add(passwordLabel, gbc);
 
         gbc.gridy = 4;
         gbc.gridwidth = 2;
-        painel.add(tfSenha, gbc);
+        panel.add(passwordField, gbc);
 
         gbc.gridy = 5;
         gbc.gridwidth = 2;
         gbc.insets = new Insets(5, 5, 15, 5);
-        painel.add(acessar, gbc);
+        panel.add(accessButton, gbc);
 
-        // Configuração painel com Botão Acessar
-        JPanel acessosPanel = new JPanel(new GridLayout(2, 1, 5, 5));
-        acessosPanel.setOpaque(false);
-        acessosPanel.add(acessar);
+        // Configuração panel com Botão Acessar
+        JPanel accessPanel = new JPanel(new GridLayout(2, 1, 5, 5));
+        accessPanel.setOpaque(false);
+        accessPanel.add(accessButton);
 
-        // Configuração do painel de Botão Acessar e Painel EsqueceuSenha
-        JPanel esqueceuSenhaPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        esqueceuSenhaPanel.setOpaque(false);
-        esqueceuSenhaPanel.add(lbEsqueceuSenha);
-        painel.add(acessosPanel, gbc);
-        acessosPanel.add(esqueceuSenhaPanel);
+        // Configuração do panel de Botão Acessar e Painel EsqueceuSenha
+        JPanel forgotPasswordPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        forgotPasswordPanel.setOpaque(false);
+        forgotPasswordPanel.add(forgotPasswordLabel);
+        panel.add(accessPanel, gbc);
+        accessPanel.add(forgotPasswordPanel);
 
         // Painel de Posição do Elementos
-        JPanel painelPosicao = new JPanel(new BorderLayout());
-        painelPosicao.setOpaque(false);
-        painelPosicao.add(painel, BorderLayout.CENTER);
+        JPanel positionPanel = new JPanel(new BorderLayout());
+        positionPanel.setOpaque(false);
+        positionPanel.add(panel, BorderLayout.CENTER);
 
-        // Configuração de Posições do painel principal
+        // Configuração de Posições do panel principal
         JPanel contentPanel = new JPanel(new BorderLayout());
         contentPanel.setOpaque(false);
-        contentPanel.add(lbImagemLogo, BorderLayout.WEST);
-        contentPanel.add(painelPosicao, BorderLayout.CENTER);
+        contentPanel.add(imageLogoLabel, BorderLayout.WEST);
+        contentPanel.add(positionPanel, BorderLayout.CENTER);
 
-        // Configuração do painel final - Visualização
-        setContentPane(mainPanel);
-        mainPanel.setLayout(new BorderLayout());
-        mainPanel.add(contentPanel, BorderLayout.CENTER);
+        // Configuração do panel final - Visualização
+        setContentPane(backgroundPanel);
+        backgroundPanel.setLayout(new BorderLayout());
+        backgroundPanel.add(contentPanel, BorderLayout.CENTER);
 
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
     // Design - Caixa de Login
-    JTextField createRoundedTextField(String placeholder, int radius) {
+    JTextField createRoundedTextField(String placeholder, int roundedRadius) {
         JTextField tf = new JTextField(placeholder);
-        tf.setFont(font2);
+        tf.setFont(plainSystemFont);
         tf.setOpaque(true);
-        tf.setBorder(new RoundedBorder(radius));
+        tf.setBorder(new RoundedBorder(roundedRadius));
         return tf;
     }
 
     // Design - Caixa de Senha
-    JPasswordField createRoundedPasswordField(String placeholder, int radius) {
+    JPasswordField createRoundedPasswordField(String placeholder, int roundedRadius) {
         JPasswordField tf = new JPasswordField(placeholder);
-        tf.setFont(font2);
+        tf.setFont(plainSystemFont);
         tf.setOpaque(true);
-        tf.setBorder(new RoundedBorder(radius));
+        tf.setBorder(new RoundedBorder(roundedRadius));
         return tf;
     }
 
     // Desigin - Botão Acessar
     JButton btnAcessar() {
-        RoundedButton acessar = new RoundedButton("Acessar", 50);
-        acessar.setFont(font);
-        acessar.setForeground(Color.WHITE);
-        acessar.setBackground(new Color(249, 161, 61));
+        RoundedButton accessButton = new RoundedButton("Acessar", 50);
+        accessButton.setFont(systemFont);
+        accessButton.setForeground(Color.WHITE);
+        accessButton.setBackground(new Color(249, 161, 61));
 
         // Definação de dimensões do botão
-        acessar.setPreferredSize(new Dimension(100, 40));
-        acessar.setMinimumSize(new Dimension(100, 40));
-        acessar.setMaximumSize(new Dimension(100, 40));
+        accessButton.setPreferredSize(new Dimension(100, 40));
+        accessButton.setMinimumSize(new Dimension(100, 40));
+        accessButton.setMaximumSize(new Dimension(100, 40));
 
-        return acessar;
-    }
-
-    // Fundo da tela - Background
-    class BackgroundPanel extends JPanel {
-        private Image backgroundImage;
-
-        public BackgroundPanel(String imagePath) {
-            this.backgroundImage = new ImageIcon(imagePath).getImage();
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-        }
+        return accessButton;
     }
 
     // Classe RoundBorder - Caixas de Botão Acessar
     class RoundedButton extends JButton {
-        private int radius;
+        private int roundedRadius;
 
-        public RoundedButton(String label, int radius) {
+        public RoundedButton(String label, int roundedRadius) {
             super(label);
-            this.radius = radius;
+            this.roundedRadius = roundedRadius;
             setOpaque(false);
         }
 
@@ -246,7 +233,7 @@ public class LoginScreen extends JFrame {
         protected void paintComponent(Graphics g) {
             Graphics2D g2d = (Graphics2D) g.create();
             g2d.setColor(getBackground());
-            g2d.fill(new RoundRectangle2D.Double(0, 0, getWidth() - 1, getHeight() - 1, radius, radius));
+            g2d.fill(new RoundRectangle2D.Double(0, 0, getWidth() - 1, getHeight() - 1, roundedRadius, roundedRadius));
             super.paintComponent(g2d);
             g2d.dispose();
         }
@@ -257,36 +244,9 @@ public class LoginScreen extends JFrame {
 
         @Override
         public boolean contains(int x, int y) {
-            return new RoundRectangle2D.Double(0, 0, getWidth() - 1, getHeight() - 1, radius, radius).contains(x, y);
+            return new RoundRectangle2D.Double(0, 0, getWidth() - 1, getHeight() - 1, roundedRadius, roundedRadius).contains(x, y);
         }
     }
 
-    // Classe RoundBorder - Caixas de Texto
-    class RoundedBorder extends AbstractBorder {
-        private int radius;
-
-        public RoundedBorder(int radius) {
-            this.radius = radius;
-        }
-
-        @Override
-        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-            Graphics2D g2d = (Graphics2D) g.create();
-            g2d.setColor(Color.WHITE);
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2d.draw(new RoundRectangle2D.Double(x, y, width - 1, height - 1, radius, radius));
-            g2d.dispose();
-        }
-
-        @Override
-        public Insets getBorderInsets(Component c) {
-            return new Insets(radius, radius, radius, radius);
-        }
-
-        @Override
-        public Insets getBorderInsets(Component c, Insets insets) {
-            insets.left = insets.top = insets.right = insets.bottom = radius;
-            return insets;
-        }
-    }
+    
 }
